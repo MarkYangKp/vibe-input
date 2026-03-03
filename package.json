@@ -1,18 +1,19 @@
 {
-  "name": "vibe_type",
+  "name": "vibe-input",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Vibe Coding 语音输入工具",
+  "bin": {
+    "vibe-input": "./vibe-input.js"
   },
-  "keywords": [],
+  "scripts": {
+    "start": "node vibe-input.js",
+    "link": "npm link"
+  },
+  "keywords": ["voice", "input", "clipboard"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "express": "^5.2.1",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode": "^1.5.4"
   }
 }
