@@ -1,4 +1,4 @@
-# Vibe Input 0.1.2
+# Vibe Input 0.1.3
 
 **Vibe Input** 是一个为 Vibe Coding 场景打造的跨平台语音输入工具。
 
@@ -35,6 +35,7 @@ vibe-input/
 │   │   │   └── SettingsPage.tsx
 │   │   ├── hooks/               # 自定义 Hooks
 │   │   │   ├── useApi.ts
+│   │   │   ├── useBackButton.ts # Android 硬件返回键拦截
 │   │   │   ├── useDevices.ts
 │   │   │   ├── useTheme.ts
 │   │   │   └── useToast.ts
@@ -44,8 +45,18 @@ vibe-input/
 │   │   ├── store/               # 全局状态
 │   │   │   └── AppContext.tsx
 │   │   └── test/                # 测试配置
+│   ├── public/                # Web 静态资源（PWA 图标、manifest）
+│   │   ├── icon.svg
+│   │   ├── manifest.json
+│   │   └── icons/              # 生成的多尺寸 PWA 图标
+│   ├── assets/                 # @capacitor/assets 图标源文件
+│   │   ├── logo.svg
+│   │   └── splash.svg
 │   ├── capacitor.config.ts
 │   └── package.json
+├── resources/                    # 图标设计源文件（SVG）
+│   ├── icon.svg
+│   └── splash.svg
 ├── server/                       # 电脑端 Node.js 服务器（纯 API）
 │   ├── src/
 │   │   ├── vibe-input.ts        # HTTP 服务器 + API 路由

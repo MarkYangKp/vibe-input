@@ -1,0 +1,18 @@
+{
+  "name": "Vibe Input",
+  "short_name": "Vibe Input",
+  "description": "跨平台语音输入工具 — 对着手机说话，文字即刻出现在电脑光标处",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0ea5a0",
+  "theme_color": "#0ea5a0",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
