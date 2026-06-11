@@ -21,6 +21,11 @@ export function useBackButton(): void {
 
     App.addListener('backButton', () => {
       if (!isRootRef.current) {
+        // Clear any pending exit timeout when navigating away from root
+        if (exitTimeoutRef.current) {
+          clearTimeout(exitTimeoutRef.current);
+          exitTimeoutRef.current = null;
+        }
         navigate('/');
         return;
       }
