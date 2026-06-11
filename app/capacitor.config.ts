@@ -17,6 +17,12 @@ const config: CapacitorConfig = {
   plugins: {
     Camera: {
       presentationStyle: 'fullscreen'
+    },
+    CapacitorAssets: {
+      iconBackgroundColor: '#0ea5a0',
+      iconBackgroundColorDark: '#0a0f1e',
+      splashBackgroundColor: '#0ea5a0',
+      splashBackgroundColorDark: '#0a0f1e'
     }
   }
 };
