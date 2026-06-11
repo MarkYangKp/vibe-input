@@ -1,0 +1,1608 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root,
+[data-theme="light"] {
+  --bg: #f5f7fb;
+  --bg-subtle: #eef1f6;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.09);
+  --border-focus: rgba(14, 165, 160, 0.30);
+  --text: #101827;
+  --text-secondary: #556078;
+  --text-tertiary: #8b94a6;
+  --accent: #0ea5a0;
+  --accent-hover: #0d948c;
+  --accent-active: #0f766e;
+  --accent-glow: rgba(14, 165, 160, 0.15);
+  --accent-subtle: rgba(14, 165, 160, 0.06);
+  --success: #3b8c5b;
+  --success-bg: rgba(59, 140, 91, 0.08);
+  --error: #d14343;
+  --error-bg: rgba(209, 67, 67, 0.08);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+  --toggle-bg: rgba(0, 0, 0, 0.04);
+  --toggle-hover: rgba(0, 0, 0, 0.07);
+  --ai-color: #6b7fd4;
+  --ai-glow: rgba(107, 127, 212, 0.15);
+  --ai-bg: rgba(107, 127, 212, 0.08);
+}
+
+[data-theme="dark"] {
+  --bg: #0a0f1e;
+  --bg-subtle: #111827;
+  --surface: #1a2136;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --border-focus: rgba(45, 212, 191, 0.35);
+  --text: #e8ecf2;
+  --text-secondary: #8b94a6;
+  --text-tertiary: #556078;
+  --accent: #2dd4bf;
+  --accent-hover: #5ee6d5;
+  --accent-active: #14b8a6;
+  --accent-glow: rgba(45, 212, 191, 0.20);
+  --accent-subtle: rgba(45, 212, 191, 0.06);
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.10);
+  --error: #f87171;
+  --error-bg: rgba(248, 113, 113, 0.10);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.20);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.20);
+  --toggle-bg: rgba(255, 255, 255, 0.06);
+  --toggle-hover: rgba(255, 255, 255, 0.10);
+  --ai-color: #a5b4fc;
+  --ai-glow: rgba(165, 180, 252, 0.20);
+  --ai-bg: rgba(165, 180, 252, 0.10);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: block;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
+  padding: 0;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+html {
+  min-height: -webkit-fill-available;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding:
+    env(safe-area-inset-top, 16px)
+    16px
+    env(safe-area-inset-bottom, 16px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── 顶部栏 ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 2px 14px;
+  flex-shrink: 0;
+}
+
+.top-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-brand-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px var(--accent-glow);
+}
+
+.top-brand-icon svg {
+  width: 12px;
+  height: 12px;
+  color: #fff;
+}
+
+.top-brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text);
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── 按钮 ── */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+  background: var(--border);
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 0;
+  min-width: 60px;
+}
+
+.back-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.page-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── 设备列表 ── */
+.device-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.device-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px 12px;
+}
+
+.device-list-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.device-count {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.device-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+}
+
+/* ── 设备卡片 ── */
+.device-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.device-card:active {
+  transform: scale(0.98);
+  background: var(--bg-subtle);
+}
+
+.device-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.device-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.device-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.device-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.device-card-status.online {
+  color: var(--success);
+  background: var(--success-bg);
+}
+
+.device-card-status.offline {
+  color: var(--text-tertiary);
+  background: var(--bg-subtle);
+}
+
+.device-card-status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.device-card-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.device-card-address {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.device-card-time {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* ── 设备卡片（新版组件布局） ── */
+.device-card .device-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.device-card .device-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.device-meta {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.device-card .device-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.online {
+  background: var(--success);
+  box-shadow: 0 0 6px var(--success-bg);
+}
+
+.status-dot.offline {
+  background: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+.last-connected {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* ── 空状态 ── */
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+}
+
+.empty-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.empty-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+/* ── 底部栏 ── */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 12px;
+  flex-shrink: 0;
+}
+
+.add-device-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  padding: 14px 28px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  max-width: 300px;
+  justify-content: center;
+}
+
+.add-device-btn:active {
+  transform: scale(0.95);
+  background: var(--accent-active);
+}
+
+.add-device-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── 添加设备页面 ── */
+.add-device-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.add-method-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 2px 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.tab-btn:active {
+  transform: scale(0.95);
+}
+
+.method-panel {
+  display: none;
+}
+
+.method-panel.active {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── 扫码区域 ── */
+.scan-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.scan-frame {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-subtle);
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.scan-hint {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.scan-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scan-btn:active {
+  transform: scale(0.95);
+  background: var(--accent-active);
+}
+
+.scan-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── 表单 ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* 移除 number input 的原生 stepper */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.form-group input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.test-connection-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.test-connection-btn:active {
+  transform: scale(0.95);
+  background: var(--bg-subtle);
+}
+
+.test-connection-btn.testing {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.test-connection-btn.success {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.test-connection-btn.error {
+  color: var(--error);
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.test-connection-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.add-device-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-device-submit-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.add-device-submit-btn:not(:disabled):active {
+  transform: scale(0.95);
+  background: var(--accent-active);
+}
+
+/* ── 编辑器 ── */
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+  overflow: hidden;
+}
+
+.editor:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md), 0 0 0 3px var(--accent-subtle);
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 0;
+  flex-shrink: 0;
+}
+
+.editor-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-area {
+  flex: 1;
+  display: flex;
+  padding: 10px 16px 14px;
+  min-height: 0;
+}
+
+.editor-area textarea {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.75;
+  resize: none;
+  -webkit-user-select: auto;
+  user-select: auto;
+  caret-color: var(--accent);
+}
+
+.editor-area textarea:focus { outline: none; }
+.editor-area textarea::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+/* ── 底部栏（编辑器内） ── */
+.editor .bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-subtle);
+  border-radius: 0 0 17px 17px;
+  transition: background 0.3s ease;
+}
+
+.char-count {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bottom-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── AI 整理开关（输入页底部栏） ── */
+.ai-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: var(--toggle-bg);
+  color: var(--text-tertiary);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ai-toggle svg {
+  width: 13px;
+  height: 13px;
+}
+
+.ai-toggle:active {
+  transform: scale(0.93);
+}
+
+.ai-toggle.active {
+  background: var(--ai-bg);
+  border-color: var(--ai-color);
+  color: var(--ai-color);
+  box-shadow: 0 0 0 2px var(--ai-glow);
+}
+
+/* Send button AI mode indicator */
+.send-btn.ai-mode {
+  box-shadow: 0 2px 8px var(--accent-glow), 0 0 0 1px var(--ai-glow);
+}
+
+.bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── AI 整理按钮 ── */
+.polish-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--toggle-bg);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.polish-btn:active {
+  transform: scale(0.9);
+}
+
+.polish-btn.active {
+  background: var(--ai-bg);
+  border-color: var(--ai-color);
+  color: var(--ai-color);
+  box-shadow: 0 0 0 2px var(--ai-glow);
+}
+
+.polish-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── 发送按钮 ── */
+.send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  padding: 8px 18px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+  background: var(--accent-active);
+  box-shadow: 0 1px 4px var(--accent-glow);
+}
+
+.send-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.send-btn[data-state="sending"] {
+  background: var(--text-secondary);
+  pointer-events: none;
+}
+
+.send-btn[data-state="success"] {
+  background: var(--success);
+  box-shadow: 0 2px 8px var(--success-bg);
+}
+
+.send-btn svg {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.send-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 快捷键提示 ── */
+.hint {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.3px;
+  padding: 10px 0 4px;
+  flex-shrink: 0;
+}
+
+.hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0 1px;
+  vertical-align: 1px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* ── 预览浮层 ── */
+.preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.preview-overlay[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.preview-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 10px)
+    16px
+    10px;
+  flex-shrink: 0;
+}
+
+.preview-nav-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-nav-title .ai-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ai-color);
+  box-shadow: 0 0 6px var(--ai-glow);
+}
+
+.preview-nav-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: var(--toggle-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.preview-nav-close:active {
+  transform: scale(0.9);
+  background: var(--toggle-hover);
+}
+
+.preview-nav-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.preview-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.preview-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.preview-original {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-tertiary);
+  background: var(--bg-subtle);
+  border-radius: 12px;
+  padding: 14px 16px;
+  max-height: 120px;
+  overflow-y: auto;
+  transition: background 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+.preview-polished {
+  width: 100%;
+  flex: 1;
+  min-height: 160px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text);
+  resize: none;
+  caret-color: var(--ai-color);
+  transition: background 0.3s ease, border-color 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+.preview-polished:focus {
+  outline: none;
+  border-color: var(--ai-color);
+  box-shadow: 0 0 0 3px var(--ai-glow);
+}
+
+.preview-footer {
+  padding: 12px 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.preview-cancel {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.preview-cancel:active {
+  transform: scale(0.97);
+  background: var(--bg-subtle);
+}
+
+.preview-send {
+  flex: 2;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--ai-color);
+  color: #fff;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 12px var(--ai-glow);
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.preview-send:active {
+  transform: scale(0.97);
+}
+
+/* ── 设置页面 ── */
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0 2px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.setting-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ── 开关 ── */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-strong);
+  transition: .3s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ── 选择框 ── */
+select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23556078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* ── 提示文本 ── */
+.mobile-hint {
+  display: block;
+}
+
+.desktop-hint {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-hint {
+    display: none;
+  }
+  .desktop-hint {
+    display: block;
+  }
+}
+
+/* ── 非交互元素禁止选择 ── */
+.device-card,
+.device-card-status,
+.device-card-name,
+.device-card-address,
+.device-card-time,
+.device-meta,
+.status-dot,
+.last-connected,
+.device-count,
+.preview-section-label,
+.preview-original,
+.editor-label,
+.char-count,
+.setting-label,
+.setting-desc,
+.empty-title,
+.empty-subtitle,
+.scan-hint {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.92);
+  background: var(--text);
+  color: var(--bg);
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.toast[data-visible="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+/* ── 顶部栏间距 ── */
+.top-bar-spacer {
+  width: 60px;
+}
+
+/* ── 设备信息 ── */
+.device-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.device-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.device-status {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ── 预览编辑区域 ── */
+.preview-section-editable {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ── 自定义下拉选择框 ── */
+.custom-select {
+  position: relative;
+  min-width: 100px;
+}
+
+.custom-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.custom-select-trigger:active {
+  background: var(--bg-subtle);
+}
+
+.custom-select-trigger:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.custom-select-trigger svg {
+  width: 14px;
+  height: 14px;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+}
+
+.custom-select.open .custom-select-trigger svg {
+  transform: rotate(180deg);
+}
+
+.custom-select-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.custom-select.open .custom-select-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.custom-select-option {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.custom-select-option:active {
+  background: var(--accent-subtle);
+}
+
+.custom-select-option.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── 自定义弹窗 ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  padding: 24px;
+}
+
+.modal-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 320px;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  transform: scale(0.92);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.visible .modal-card {
+  transform: scale(1);
+}
+
+.modal-message {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal-input-wrapper {
+  margin-bottom: 20px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 15px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.modal-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-btn-cancel {
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+}
+
+.modal-btn-confirm {
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal-btn-danger {
+  background: var(--error);
+  color: #fff;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 480px) {
+  .page {
+    padding:
+      calc(env(safe-area-inset-top, 0px) + 10px)
+      12px
+      calc(env(safe-area-inset-bottom, 0px) + 10px);
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .page { padding: 6px 14px; }
+  .top-bar { padding: 2px 0 6px; }
+  .hint { display: none; }
+  .editor-header { display: none; }
+  .editor-area { padding: 8px 14px; }
+  .editor-area textarea { font-size: 15px; line-height: 1.6; }
+  .send-btn { padding: 7px 14px; font-size: 13px; }
+  .bottom-bar { padding: 8px 14px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

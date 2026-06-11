@@ -1,0 +1,11 @@
+{
+  "name": "@vibe-input/shared",
+  "version": "0.1.2",
+  "description": "Shared types for Vibe Input",
+  "type": "module",
+  "main": "./types.ts",
+  "types": "./types.ts",
+  "exports": {
+    ".": "./types.ts"
+  }
+}

@@ -1,0 +1,31 @@
+node_modules
+.DS_Store
+.env
+*.log
+*.tgz
+*.tsbuildinfo
+.vscode
+.claude
+.idea
+.agents
+.trae
+.omo
+
+# Build outputs
+dist
+*.apk
+
+# Generated files
+app/src/js/*.js
+
+# Test
+coverage
+
+# Capacitor
+app/android
+app/ios
+app/www
+
+# Config
+.vibe-input
+CLAUDE.local.md

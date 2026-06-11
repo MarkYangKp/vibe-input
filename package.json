@@ -1,0 +1,45 @@
+{
+  "name": "vibe-input-workspace",
+  "version": "0.1.2",
+  "description": "Vibe Input - 跨平台语音输入工具",
+  "private": true,
+  "bin": {
+    "vibe-input": "./bin/vibe-input.mjs"
+  },
+  "workspaces": [
+    "shared",
+    "app",
+    "server"
+  ],
+  "scripts": {
+    "build": "npm run build:server && npm run build:app",
+    "build:app": "cd app && npm run build",
+    "build:server": "cd server && npm run build",
+    "dev": "cd server && npm run dev",
+    "start": "cd server && npm start",
+    "lint": "npm run lint:app && npm run lint:server",
+    "lint:app": "cd app && npm run lint",
+    "lint:server": "cd server && npm run lint",
+    "typecheck": "npm run typecheck:app && npm run typecheck:server",
+    "typecheck:app": "cd app && npm run typecheck",
+    "typecheck:server": "cd server && npm run typecheck",
+    "test": "npm run test:app && npm run test:server",
+    "test:app": "cd app && npm test",
+    "test:server": "cd server && npm test",
+    "cap:sync": "cd app && npm run cap:sync",
+    "cap:android": "cd app && npm run cap:android",
+    "cap:ios": "cd app && npm run cap:ios"
+  },
+  "keywords": [
+    "voice",
+    "input",
+    "clipboard",
+    "capacitor",
+    "mobile"
+  ],
+  "author": "markyangkp",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "name": "vibe-input",
+  "version": "0.1.2",
+  "description": "Vibe Input - 跨平台语音输入工具，手机说话电脑上屏",
+  "type": "module",
+  "bin": {
+    "vibe-input": "./dist/server/src/vibe-input.js"
+  },
+  "main": "./dist/server/src/vibe-input.js",
+  "types": "./dist/server/src/vibe-input.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server/src/vibe-input.d.ts",
+      "default": "./dist/server/src/vibe-input.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && cp src/prompt.txt dist/server/src/prompt.txt",
+    "dev": "tsx src/vibe-input.ts",
+    "start": "node dist/server/src/vibe-input.js",
+    "link": "npm link",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "voice",
+    "input",
+    "clipboard",
+    "vibe-coding",
+    "speech-to-text",
+    "mobile-input"
+  ],
+  "author": "MarkYangKp",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkYangKp/vibe-input.git",
+    "directory": "server"
+  },
+  "homepage": "https://github.com/MarkYangKp/vibe-input#readme",
+  "bugs": {
+    "url": "https://github.com/MarkYangKp/vibe-input/issues"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^25.8.0",
+    "@types/qrcode": "^1.5.6",
+    "eslint": "^9.0.0",
+    "tsx": "^4.22.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
+  }
+}
