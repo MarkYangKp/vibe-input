@@ -127,8 +127,8 @@ function copyToClipboard(text: string): Promise<void> {
         args = [];
         break;
       case 'win32':
-        cmd = 'powershell';
-        args = ['-NoProfile', '-Command', 'Set-Clipboard -Value $input'];
+        cmd = 'cmd';
+        args = ['/c', 'chcp 65001 > nul && clip'];
         break;
       case 'linux':
         cmd = 'xclip';
