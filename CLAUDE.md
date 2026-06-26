@@ -1,4 +1,4 @@
-# Vibe Input 0.1.3
+# Vibe Input 0.1.4
 
 **Vibe Input** 是一个为 Vibe Coding 场景打造的跨平台语音输入工具。
 

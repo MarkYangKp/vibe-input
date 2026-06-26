@@ -1,6 +1,6 @@
 {
   "name": "vibe-input",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Vibe Input - 跨平台语音输入工具，手机说话电脑上屏",
   "type": "module",
   "bin": {

@@ -43,7 +43,7 @@ export function SettingsPage() {
           <div className="setting-item">
             <div className="setting-info">
               <span className="setting-label">版本</span>
-              <span className="setting-desc">2.0.0</span>
+              <span className="setting-desc">0.1.4</span>
             </div>
           </div>
         </div>

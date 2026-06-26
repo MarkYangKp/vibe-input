@@ -1,5 +1,6 @@
-import { createContext, useContext, useReducer, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
 import type { Device } from '../../../shared/types';
+import { getSettings, getDevices, getLastDevice } from '../services/storage';
 
 // Settings interface
 export interface Settings {
@@ -156,6 +157,22 @@ interface AppProviderProps {
 
 export function AppProvider({ children }: AppProviderProps): JSX.Element {
   const [state, dispatch] = useReducer(appReducer, initialState);
+
+  useEffect(() => {
+    (async () => {
+      const settings = await getSettings();
+      dispatch({ type: 'SET_SETTINGS', payload: settings });
+
+      const devices = await getDevices();
+      if (devices.length > 0) {
+        dispatch({ type: 'SET_DEVICES', payload: devices });
+        const lastDevice = await getLastDevice();
+        if (lastDevice) {
+          dispatch({ type: 'SET_CURRENT_DEVICE', payload: lastDevice });
+        }
+      }
+    })();
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

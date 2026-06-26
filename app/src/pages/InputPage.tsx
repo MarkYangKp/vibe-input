@@ -45,20 +45,29 @@ export function InputPage() {
 
   const handleToggleAi = useCallback(async () => {
     const newValue = !aiEnabled;
+    if (newValue && !aiAvailable) {
+      showToast('请先在电脑端配置 LLM API Key', 'error');
+      return;
+    }
     await saveSettings({ llmEnabled: newValue });
     dispatch({ type: 'SET_SETTINGS', payload: { llmEnabled: newValue } });
-  }, [aiEnabled, dispatch]);
+  }, [aiEnabled, aiAvailable, dispatch, showToast]);
 
   const handleSend = useCallback(async () => {
     if (!device || !text.trim() || sending) return;
 
     // If AI is enabled, polish first
     if (aiEnabled) {
+      setSending(true);
       setOriginalText(text.trim());
-      const result = await polishText(device, text.trim());
-      if (result.ok && result.text) {
-        setPolishedText(result.text);
-        setShowPreview(true);
+      try {
+        const result = await polishText(device, text.trim());
+        if (result.ok && result.text) {
+          setPolishedText(result.text);
+          setShowPreview(true);
+        }
+      } finally {
+        setSending(false);
       }
       return;
     }
@@ -162,12 +171,11 @@ export function InputPage() {
         <div className="bottom-bar">
           <div className="bottom-left">
             <span className="char-count">{charCount}</span>
-            {aiAvailable && (
               <button
                 type="button"
-                className={`ai-toggle ${aiEnabled ? 'active' : ''}`}
+                className={`ai-toggle ${aiEnabled ? 'active' : ''} ${!aiAvailable ? 'disabled' : ''}`}
                 onClick={handleToggleAi}
-                title={aiEnabled ? 'AI 整理已开启' : 'AI 整理已关闭'}
+                title={!aiAvailable ? '请先在电脑端配置 LLM' : aiEnabled ? 'AI 整理已开启' : 'AI 整理已关闭'}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2l1.09 3.36L16.18 6l-2.72 2.18L14.36 12 12 9.82 9.64 12l.9-3.82L7.82 6l3.09-.64L12 2z"/>
@@ -176,7 +184,6 @@ export function InputPage() {
                 </svg>
                 <span>AI</span>
               </button>
-            )}
           </div>
           <div className="bottom-actions">
             <button type="button" className="icon-btn" onClick={() => setText('')} title="清空">

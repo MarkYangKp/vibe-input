@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import type { Config } from '../../shared/types.js';
@@ -31,6 +32,7 @@ const DEFAULT_CONFIG: Config = {
     prompt: '',
     enabled: true,
   },
+  server: {},
 };
 
 export function getPromptPath(): string {
@@ -60,6 +62,10 @@ export function loadConfig(): Config {
       llm: {
         ...DEFAULT_CONFIG.llm,
         ...userConfig.llm,
+      },
+      server: {
+        ...DEFAULT_CONFIG.server,
+        ...userConfig.server,
       },
     };
     if (!config.llm.prompt) {
@@ -96,4 +102,21 @@ export function saveConfig(config: Config): void {
 
 export function isLLMConfigured(config: Config): boolean {
   return config.llm.enabled && config.llm.apiKey.length > 0;
+}
+
+/**
+ * 获取持久化的配对令牌。如果不存在或 forceRegenerate=true，生成新的并保存。
+ * 令牌为 6 位数字字符串，保持与现有 APP 兼容。
+ */
+export function getOrCreatePairingToken(config: Config, forceRegenerate = false): string {
+  if (!forceRegenerate && config.server?.pairingToken) {
+    return config.server.pairingToken;
+  }
+  const token = crypto.randomInt(100000, 999999).toString();
+  if (!config.server) {
+    config.server = {};
+  }
+  config.server.pairingToken = token;
+  saveConfig(config);
+  return token;
 }

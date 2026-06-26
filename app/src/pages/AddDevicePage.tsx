@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { useDevices } from '../hooks/useDevices';
 import { useToast } from '../hooks/useToast';
 import { testConnection } from '../services/api';
+import { WebQRScanner } from '../components/WebQRScanner';
 import type { Device } from '../../../shared/types';
 
 export function AddDevicePage() {
@@ -18,8 +20,27 @@ export function AddDevicePage() {
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<'success' | 'error' | null>(null);
   const [adding, setAdding] = useState(false);
+  const [webScannerOpen, setWebScannerOpen] = useState(false);
 
-  const handleScan = async () => {
+  const handleScanResult = useCallback((rawValue: string) => {
+    try {
+      const data = JSON.parse(rawValue);
+      if (data.type === 'vibe-input' && data.ip && data.port) {
+        setIp(data.ip);
+        setPort(String(data.port));
+        if (data.name) setName(data.name);
+        if (data.token) setToken(data.token);
+        setActiveTab('manual');
+        showToast('二维码扫描成功', 'success');
+      } else {
+        showToast('无效的二维码格式', 'error');
+      }
+    } catch {
+      showToast('二维码内容无法解析', 'error');
+    }
+  }, [showToast]);
+
+  const handleNativeScan = async () => {
     try {
       const { BarcodeScanner, BarcodeFormat } = await import('@capacitor-mlkit/barcode-scanning');
 
@@ -39,28 +60,21 @@ export function AddDevicePage() {
         return;
       }
 
-      try {
-        const data = JSON.parse(barcode.displayValue);
-        if (data.type === 'vibe-input' && data.ip && data.port) {
-          setIp(data.ip);
-          setPort(String(data.port));
-          if (data.name) setName(data.name);
-          if (data.token) setToken(data.token);
-          setActiveTab('manual');
-          showToast('二维码扫描成功', 'success');
-        } else {
-          showToast('无效的二维码格式', 'error');
-        }
-      } catch {
-        showToast('二维码内容无法解析', 'error');
-      }
+      handleScanResult(barcode.displayValue);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.includes('cancelled') || msg.includes('canceled')) {
-        // User cancelled scan, do nothing
         return;
       }
       showToast('扫码失败: ' + msg, 'error');
+    }
+  };
+
+  const handleScan = async () => {
+    if (Capacitor.isNativePlatform()) {
+      await handleNativeScan();
+    } else {
+      setWebScannerOpen(true);
     }
   };
 
@@ -246,6 +260,15 @@ export function AddDevicePage() {
           )}
         </div>
       </div>
+      {webScannerOpen && (
+        <WebQRScanner
+          onScan={(data) => {
+            setWebScannerOpen(false);
+            handleScanResult(data);
+          }}
+          onClose={() => setWebScannerOpen(false)}
+        />
+      )}
     </div>
   );
 }

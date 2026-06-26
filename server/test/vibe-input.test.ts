@@ -8,7 +8,7 @@ import {
   PLATFORM,
 } from '../src/vibe-input.js';
 
-import { loadConfig, isLLMConfigured, getConfigPath, getConfigDir } from '../src/config.js';
+import { loadConfig, isLLMConfigured, getConfigPath, getConfigDir, getOrCreatePairingToken } from '../src/config.js';
 
 describe('getLocalIP', () => {
   it('should return a string', () => {
@@ -74,6 +74,31 @@ describe('config', () => {
     assert.equal(typeof config.llm.model, 'string');
     assert.equal(typeof config.llm.prompt, 'string');
     assert.equal(typeof config.llm.enabled, 'boolean');
+    assert.ok(typeof config.server === 'object');
+  });
+
+  it('getOrCreatePairingToken should return a 6-digit token', () => {
+    const config = loadConfig();
+    const token = getOrCreatePairingToken(config);
+    assert.equal(typeof token, 'string');
+    assert.equal(token.length, 6);
+    assert.ok(/^\d{6}$/.test(token), `Expected 6-digit number, got: ${token}`);
+  });
+
+  it('getOrCreatePairingToken should return the same token on second call', () => {
+    const config = loadConfig();
+    const token1 = getOrCreatePairingToken(config);
+    const token2 = getOrCreatePairingToken(config);
+    assert.equal(token1, token2);
+  });
+
+  it('getOrCreatePairingToken with forceRegenerate should return a different token', () => {
+    const config = loadConfig();
+    const token1 = getOrCreatePairingToken(config);
+    const token2 = getOrCreatePairingToken(config, true);
+    assert.notEqual(token1, token2);
+    assert.equal(token2.length, 6);
+    assert.ok(/^\d{6}$/.test(token2));
   });
 
   it('isLLMConfigured should return false when apiKey is empty', () => {

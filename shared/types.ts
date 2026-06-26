@@ -55,6 +55,12 @@ export interface LLMConfig {
   enabled: boolean;
 }
 
+export interface ServerConfig {
+  /** 持久化的配对令牌，重启后保持不变 */
+  pairingToken?: string;
+}
+
 export interface Config {
   llm: LLMConfig;
+  server?: ServerConfig;
 }

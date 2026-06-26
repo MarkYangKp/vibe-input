@@ -7,7 +7,7 @@ import { exec, execSync, spawn } from 'node:child_process';
 import { networkInterfaces, platform } from 'node:os';
 import QRCode from 'qrcode';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { loadConfig, isLLMConfigured, saveConfig } from './config.js';
+import { loadConfig, isLLMConfigured, saveConfig, getOrCreatePairingToken } from './config.js';
 import { polishText } from './llm.js';
 import { setupLLMConfig } from './setup.js';
 
@@ -68,12 +68,6 @@ function rateLimit(
   return true;
 }
 
-// ─── Pairing token ───────────────────────────────────────────────────────────
-
-const PAIRING_CODE = crypto.randomInt(100000, 999999).toString();
-
-// ─── Platform helpers ────────────────────────────────────────────────────────
-
 function getPort(): number {
   const argIndex = process.argv.indexOf('--port');
   if (argIndex !== -1 && process.argv[argIndex + 1]) {
@@ -93,9 +87,19 @@ const MAX_TEXT_LENGTH = 50_000;
 const PLATFORM = platform();
 const config = loadConfig();
 
+// 持久化配对令牌：重启后端后仍保持有效，设备无需重新配对
+// 使用 --regenerate-token 参数可重新生成令牌并使旧设备失效
+const shouldRegenerate = process.argv.includes('--regenerate-token');
+const PAIRING_CODE = getOrCreatePairingToken(config, shouldRegenerate);
+if (shouldRegenerate) {
+  log('info', `Pairing token regenerated (old devices invalidated): ${PAIRING_CODE}`);
+} else {
+  log('info', `Pairing token: ${PAIRING_CODE} (persistent across restarts)`);
+}
+
 function getLocalIP(): string {
   const nets = networkInterfaces();
-  const preferred = ['en0', 'en1', 'Wi-Fi', 'Ethernet', 'wlan0', 'eth0', 'enp'];
+  const preferred = ['en0', 'en1', 'Wi-Fi', 'WLAN', 'Ethernet', 'wlan0', 'eth0', 'enp'];
   for (const name of preferred) {
     if (nets[name]) {
       for (const net of nets[name]!) {
@@ -105,7 +109,7 @@ function getLocalIP(): string {
       }
     }
   }
-  const skip = /^(zt|feth|utun|awdl|llw|bridge|vmnet|vboxnet|docker|veth|br-|lo)/i;
+  const skip = /^(zt|feth|utun|awdl|llw|bridge|vmnet|vboxnet|docker|veth|br-|lo|fc|tun|tap)/i;
   for (const name of Object.keys(nets)) {
     if (skip.test(name)) continue;
     for (const net of nets[name]!) {
@@ -435,40 +439,35 @@ const server = http.createServer((req: http.IncomingMessage, res: http.ServerRes
           prompt?: string;
           enabled?: boolean;
         };
-        // Validate baseUrl to prevent SSRF
+        // Validate all fields first, then apply (avoid partial mutation on error)
         if (data.baseUrl !== undefined) {
           try {
             const parsed = new URL(data.baseUrl);
             if (!['https:', 'http:'].includes(parsed.protocol)) {
               throw new Error('不支持的协议');
             }
-            config.llm.baseUrl = data.baseUrl;
           } catch {
             jsonResponse(res, 400, { ok: false, error: '无效的 baseUrl' });
             return;
           }
         }
-        if (data.apiKey !== undefined) {
-          if (data.apiKey.length > 512) {
-            jsonResponse(res, 400, { ok: false, error: 'API Key 过长' });
-            return;
-          }
-          config.llm.apiKey = data.apiKey;
+        if (data.apiKey !== undefined && data.apiKey.length > 512) {
+          jsonResponse(res, 400, { ok: false, error: 'API Key 过长' });
+          return;
         }
-        if (data.model !== undefined) {
-          if (data.model.length > 128) {
-            jsonResponse(res, 400, { ok: false, error: '模型名称过长' });
-            return;
-          }
-          config.llm.model = data.model;
+        if (data.model !== undefined && data.model.length > 128) {
+          jsonResponse(res, 400, { ok: false, error: '模型名称过长' });
+          return;
         }
-        if (data.prompt !== undefined) {
-          if (data.prompt.length > 8192) {
-            jsonResponse(res, 400, { ok: false, error: '提示词过长' });
-            return;
-          }
-          config.llm.prompt = data.prompt;
+        if (data.prompt !== undefined && data.prompt.length > 8192) {
+          jsonResponse(res, 400, { ok: false, error: '提示词过长' });
+          return;
         }
+        // All validations passed — apply changes
+        if (data.baseUrl !== undefined) config.llm.baseUrl = data.baseUrl;
+        if (data.apiKey !== undefined) config.llm.apiKey = data.apiKey;
+        if (data.model !== undefined) config.llm.model = data.model;
+        if (data.prompt !== undefined) config.llm.prompt = data.prompt;
         if (data.enabled !== undefined) config.llm.enabled = data.enabled;
         saveConfig(config);
         log('info', `Config updated: model=${config.llm.model}, configured=${isLLMConfigured(config)}`);
